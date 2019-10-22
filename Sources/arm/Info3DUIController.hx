@@ -44,7 +44,7 @@ class Info3DUIController extends iron.Trait {
         //getElement("timepb") = world.getTimeTaskbyBld(building.selectedBuilding)
         notifyOnUpdate(function (){
             if (building.selectedBuilding != null){
-                var prop = building.getPropByType(building.selectedBuilding.type);
+                var prop = world.getPropByType(building.selectedBuilding.type);
                 getElement("bldtype").text = building.getStringBldType(building.selectedBuilding.type);
                 getElement("amt").text = prop.at + " / " + prop.max;
             }

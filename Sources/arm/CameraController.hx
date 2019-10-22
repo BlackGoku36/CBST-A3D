@@ -19,7 +19,7 @@ class CameraController extends iron.Trait {
 
 		notifyOnUpdate(update);
 	}
-	
+
 	function update() {
 		if(mouse.down("right")){
 			cameraEmpty.rotate(new Vec4(0, 0, 1), -mouse.movementX / 200);

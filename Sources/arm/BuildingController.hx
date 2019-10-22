@@ -150,26 +150,33 @@ class BuildingController extends iron.Trait {
 			switch (building.type){
 				case 1: buildingList[0] += 1;
 				case 2: buildingList[1] += 1;
-				//case 3: buildingList[2] += 1;
-				//case 4: buildingList[3] += 1;
+				case 3: buildingList[2] += 1;
+				case 4: buildingList[3] += 1;
 				case 5: buildingList[4] += 1;
 				case 6: buildingList[5] += 1;
-				//case 7: buildingList[6] += 1;
+				case 7: buildingList[6] += 1;
 				case 8: buildingList[7] += 1;
 			}
 		}
 		world.houseProp.at = buildingList[0];
 		world.parkProp.at = buildingList[1];
+		world.gardenProp.at = buildingList[2];
+		world.sportcourtProp.at = buildingList[3];
 		world.sawmillProp.at = buildingList[4];
 		world.quarryProp.at = buildingList[5];
+		world.steelworksProp.at = buildingList[6];
 		world.powerplantProp.at = buildingList[7];
 	}
 	static function checkResources(type:Int){
 		var world = WorldController;
 		switch(type){
-			case 1: (world.woods[0] < world.houseProp.costW && world.stones[0] < world.houseProp.costS) ? enoughResources = false : enoughResources = true;
+			case 1: (world.woods[0] < world.houseProp.costW && world.stones[0] < world.houseProp.costSe && world.steels[0] < world.houseProp.costSl) ? enoughResources = false : enoughResources = true;
+			case 2: (world.woods[0] < world.parkProp.costW && world.stones[0] < world.parkProp.costSe && world.steels[0] < world.parkProp.costSl) ? enoughResources = false : enoughResources = true;
+			case 3: (world.woods[0] < world.gardenProp.costW && world.stones[0] < world.gardenProp.costSe && world.steels[0] < world.gardenProp.costSl) ? enoughResources = false : enoughResources = true;
+			case 4: (world.woods[0] < world.sportcourtProp.costW && world.stones[0] < world.sportcourtProp.costSe && world.steels[0] < world.sportcourtProp.costSl) ? enoughResources = false : enoughResources = true;
 			case 5: (world.money[0] < world.sawmillProp.costM) ? enoughResources = false : enoughResources = true;
 			case 6: (world.money[0] < world.quarryProp.costM) ? enoughResources = false : enoughResources = true;
+			case 7: (world.money[0] < world.steelworksProp.costM) ? enoughResources = false : enoughResources = true;
 			case 8: (world.money[0] < world.powerplantProp.costM) ? enoughResources = false : enoughResources = true;
 		}
 	}
@@ -178,11 +185,26 @@ class BuildingController extends iron.Trait {
 		switch(type){
 			case 1:
 				world.woods[0] -= world.houseProp.costW;
-				world.stones[0] -= world.houseProp.costS;
+				world.stones[0] -= world.houseProp.costSe;
+				world.steels[0] -= world.houseProp.costSl;
+			case 2:
+				world.woods[0] -= world.parkProp.costW;
+				world.stones[0] -= world.parkProp.costSe;
+				world.steels[0] -= world.parkProp.costSl;
+			case 3:
+				world.woods[0] -= world.gardenProp.costW;
+				world.stones[0] -= world.gardenProp.costSe;
+				world.steels[0] -= world.gardenProp.costSl;
+			case 4:
+				world.woods[0] -= world.sportcourtProp.costW;
+				world.stones[0] -= world.sportcourtProp.costSe;
+				world.steels[0] -= world.sportcourtProp.costSl;
 			case 5:
 				world.money[0] -= world.sawmillProp.costM;
 			case 6:
 				world.money[0] -= world.quarryProp.costM;
+			case 7:
+				world.money[0] -= world.steelworksProp.costM;
 			case 8:
 				world.money[0] -= world.powerplantProp.costM;
 		}
@@ -191,8 +213,12 @@ class BuildingController extends iron.Trait {
 		var world = WorldController;
 		switch(type){
 			case 1: world.houseProp.at == world.houseProp.max ? enoughBuildings = true : enoughBuildings = false;
+			case 2: world.parkProp.at == world.parkProp.max ? enoughBuildings = true : enoughBuildings = false;
+			case 3: world.gardenProp.at == world.gardenProp.max ? enoughBuildings = true : enoughBuildings = false;
+			case 4: world.sportcourtProp.at == world.sportcourtProp.max ? enoughBuildings = true : enoughBuildings = false;
 			case 5: world.sawmillProp.at == world.sawmillProp.max ? enoughBuildings = true : enoughBuildings = false;
 			case 6: world.quarryProp.at == world.quarryProp.max ? enoughBuildings = true : enoughBuildings = false;
+			case 7: world.steelworksProp.at == world.steelworksProp.max ? enoughBuildings = true : enoughBuildings = false;
 			case 8: world.powerplantProp.at == world.powerplantProp.max ? enoughBuildings = true : enoughBuildings = false;
 		}
 	}
@@ -218,21 +244,5 @@ class BuildingController extends iron.Trait {
 			case 8: stringType = "Powerplant";
 		}
 		return stringType;
-	}
-	//Mark: New
-	public static function getPropByType(type:Int):BuildingProp{
-		var prop = null;
-		var world = WorldController;
-		switch(type){
-			case 1: prop = world.houseProp;
-			case 2: prop = world.parkProp;
-			case 3: prop = null;
-			case 4: prop = null;
-			case 5: prop = world.sawmillProp;
-			case 6: prop = world.quarryProp;
-			case 7: prop = null;
-			case 8: prop = world.powerplantProp;
-		}
-		return prop;
 	}
 }
