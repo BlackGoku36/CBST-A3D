@@ -13,24 +13,17 @@ class PlayerController extends iron.Trait {
 
 	var building = BuildingController;
 	var world = WorldController;
-	var buildingType: Int = 1;
-
 
 	public function new() {
 		super();
-
 		notifyOnUpdate(update);
 	}
 
 	function update() {
-
 		if(!building.isBuildingSelected){
 			hideInfoCard();
 			if (mouse.started()){
 				building.raySelectBuilding();
-			}
-			if (kb.started("p")){
-				building.spawnBuilding(buildingType);
 			}
 		}else{
 			showInfoCard();
@@ -53,15 +46,6 @@ class PlayerController extends iron.Trait {
 			//Mark: fix doc
 			building.buildingContact();
 		}
-
-		if (kb.started("1")) buildingType = 1;//(House)
-		else if (kb.started("2")) buildingType = 2;//(Park)
-		else if (kb.started("3")) buildingType = 3;//(Garden)
-		else if (kb.started("4")) buildingType = 4;//(Sport court)
-		else if (kb.started("5")) buildingType = 5;//(Sawmill)
-		else if (kb.started("6")) buildingType = 6;//(Quarry)
-		else if (kb.started("7")) buildingType = 7;//(Steelworks)
-		else if (kb.started("8")) buildingType = 8;//(Powerplant)
 
 	}
 

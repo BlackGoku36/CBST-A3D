@@ -68,16 +68,6 @@ class WorldController extends iron.Trait {
 	function init() {
 		var world = WorldController;
 		var canvas = MainCanvasController;
-		// happinesstt = Scheduler.addTimeTask(function (){
-		// 	var houseH = houseProp.at * houseProp.prodH;
-		// 	var parkH = parkProp.at * parkProp.prodH;
-		// 	var sawmillP = sawmillProp.at * sawmillProp.prodP;
-		// 	var quarryP = quarryProp.at * quarryProp.prodP;
-		// 	var powerplantP = powerplantProp.at * powerplantProp.prodP;
-		// 	if (happiness[0] <= happiness[1]){
-		// 		happiness[0] += (houseH + parkH) - (sawmillP + quarryP + powerplantP);
-		// 	}
-		// }, 10, 10);
 		houseProp.tt = Scheduler.addTimeTask(function(){
 			if (electricity[0] >= world.houseProp.costE){
 				if (money[0] <= money[1]) money[0] += houseProp.at * houseProp.prodM;
