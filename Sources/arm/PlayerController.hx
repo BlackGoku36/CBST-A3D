@@ -43,7 +43,6 @@ class PlayerController extends iron.Trait {
 
 		if (building.buildingMove){
 			building.moveBuilding();
-			//Mark: fix doc
 			building.buildingContact();
 		}
 

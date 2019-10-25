@@ -21,7 +21,6 @@ class BuildingController extends iron.Trait {
 	public static var buildings:Array<Building> = [];
 	public static var buildingId = 0;
 
-	//Mark: change selectedBuilding Type
 	public static var selectedBuilding:Building = null;
 	public static var isBuildingSelected = false;
 
@@ -38,7 +37,6 @@ class BuildingController extends iron.Trait {
 	public static function raySelectBuilding() {
 		var rigidbody = getRaycastRigidBody(2).rigidbody;
 		if(rigidbody != null && StringTools.startsWith(rigidbody.object.name, "bld")){
-			//Mark: change selectedBuilding Type
 			selectedBuilding = getBuildingFromString(rigidbody.object.name);
 			isBuildingSelected = true;
 		}else {
@@ -48,14 +46,12 @@ class BuildingController extends iron.Trait {
 	}
 
 	public static function unselectBuilding() {
-		//Mark: change selectedBuilding Type
 		selectedBuilding = null;
 		isBuildingSelected = false;
 		buildingMove = false;
 	}
 
 	public static function selectBuilding(name: String) {
-		//Mark: change selectedBuilding Type
 		selectedBuilding = getBuildingFromString(name);
 		isBuildingSelected = true;
 		buildingMove = true;
@@ -64,13 +60,11 @@ class BuildingController extends iron.Trait {
 	public static function moveBuilding() {
 		var raycast = getRaycastRigidBody(1);
 		if(raycast.rigidbody != null && raycast.rigidbody.object.name == "Ground"){
-			//Mark: change selectedBuilding Type
 			Scene.active.getChild(selectedBuilding.name).transform.loc.set(Math.floor(raycast.hit.pos.x), Math.floor(raycast.hit.pos.y), 0.2);
 		}
 	}
 
 	public static function rotateBuilding() {
-		//Mark: change selectedBuilding Type
 		Scene.active.getChild(selectedBuilding.name).transform.rotate(Vec4.zAxis(), 1.57);
 	}
 
@@ -98,9 +92,7 @@ class BuildingController extends iron.Trait {
 	}
 
 	public static function removeBuilding() {
-		//Mark: change selectedBuilding Type
 		Scene.active.getChild(selectedBuilding.name).remove();
-		//Mark: change selectedBuilding Type
 		removefromArray(selectedBuilding.name, buildings);
 		recalculateBuildings();
 		unselectBuilding();
@@ -222,7 +214,6 @@ class BuildingController extends iron.Trait {
 			case 8: world.powerplantProp.at == world.powerplantProp.max ? enoughBuildings = true : enoughBuildings = false;
 		}
 	}
-	//Mark: change selectedBuilding Type
 	static function getBuildingFromString(name: String):Building {
 		var building:Building = null;
 		for(i in buildings){

@@ -2,7 +2,6 @@ package arm;
 
 import kha.Scheduler;
 
-import arm.BuildingController;
 import arm.MainCanvasController;
 
 typedef BuildingProp = {
@@ -12,7 +11,6 @@ typedef BuildingProp = {
 	prodH:Int, prodP:Int, tt:Int
 }
 
-//Mark: move tt to BuildingProp in tutorial
 class WorldController extends iron.Trait {
 
 	// public static var happiness:Array<Int> = [50, 100];
