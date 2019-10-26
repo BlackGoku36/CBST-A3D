@@ -26,7 +26,7 @@ class PlayerController extends iron.Trait {
 				building.raySelectBuilding();
 			}
 		}else{
-			//showInfoCard();
+			showInfoCard();
 			if (mouse.started("right")) {
 				if (!building.buildingInContact){
 					building.unselectBuilding();
