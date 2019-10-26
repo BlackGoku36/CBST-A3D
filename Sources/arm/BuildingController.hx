@@ -70,13 +70,12 @@ class BuildingController extends iron.Trait {
 
 	public static function spawnBuilding(type: Int) {
 		var world = WorldController;
+		unselectBuilding();
 		checkResources(type);
 		checkMaxBuilding(type);
 		if(!enoughBuildings && enoughResources){
 			Scene.active.spawnObject("bld_"+type, null, function(bld: Object){
 				buildingId++;
-				bld.transform.loc.set(0.0, 0.0, 0.0);
-				bld.transform.buildMatrix();
 				bld.name = "bld_"+type+"_"+buildingId;
 				buildings.push({
 					name: "bld_"+type+"_"+buildingId,
@@ -84,7 +83,6 @@ class BuildingController extends iron.Trait {
 				});
 				recalculateResources(type);
 				recalculateBuildings();
-				unselectBuilding();
 				selectBuilding(bld.name);
 			});
 		}

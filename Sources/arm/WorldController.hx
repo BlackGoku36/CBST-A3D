@@ -126,7 +126,7 @@ class WorldController extends iron.Trait {
 			if(electricity[0] <= electricity[1]) electricity[0] += powerplantProp.at * powerplantProp.prodE;
 		}, 5, 5);
 	}
-		//Mark: New
+	//Mark: New
 	public static function getPropByType(type:Int):BuildingProp{
 		var prop = null;
 		switch(type){
