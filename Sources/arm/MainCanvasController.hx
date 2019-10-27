@@ -8,7 +8,7 @@ import arm.WorldController;
 class MainCanvasController extends iron.Trait {
 
 	static var maincanvas:CanvasScript;
-	static var menuCanvas: CanvasScript;
+	static var settingCanvas: CanvasScript;
 
 	var world = WorldController;
 	var bld = BuildingController;
@@ -26,9 +26,9 @@ class MainCanvasController extends iron.Trait {
 
 	function init() {
 		maincanvas = new CanvasScript("MainCanvas", "Big_shoulders_text.ttf");
-		menuCanvas = new CanvasScript("SettingCanvas", "Big_shoulders_text.ttf");
+		settingCanvas = new CanvasScript("SettingCanvas", "Big_shoulders_text.ttf");
 
-		menuCanvas.setCanvasVisibility(false);
+		settingCanvas.setCanvasVisibility(false);
 		maincanvas.setCanvasVisibility(true);
 		maincanvas.getElement("menu_empty").visible = false;
 
@@ -44,17 +44,17 @@ class MainCanvasController extends iron.Trait {
 			}
 		});
 
-		Event.add("housebtn", function(){ selectedBtn = 3; selectBldState == 0 ||selectBldState == 4||selectBldState == 5 ? selectBldState = 3 : selectBldState = 0;});
-		Event.add("factorybtn", function(){ selectedBtn = 4; selectBldState == 0 ||selectBldState == 3||selectBldState == 5 ? selectBldState = 4 : selectBldState = 0;});
-		Event.add("communitybtn", function(){ selectedBtn = 5; selectBldState == 0 ||selectBldState == 3||selectBldState == 4 ? selectBldState = 5 : selectBldState = 0;});
-		Event.add("setting_btn", function(){ 
+		Event.add("house_btn", function(){ selectedBtn = 3; selectBldState == 0 ||selectBldState == 4||selectBldState == 5 ? selectBldState = 3 : selectBldState = 0;});
+		Event.add("factory_btn", function(){ selectedBtn = 4; selectBldState == 0 ||selectBldState == 3||selectBldState == 5 ? selectBldState = 4 : selectBldState = 0;});
+		Event.add("community_btn", function(){ selectedBtn = 5; selectBldState == 0 ||selectBldState == 3||selectBldState == 4 ? selectBldState = 5 : selectBldState = 0;});
+		Event.add("setting_btn", function(){
 			selectedBtn = 1;
-			menuCanvas.setCanvasVisibility(true);
+			settingCanvas.setCanvasVisibility(true);
 			maincanvas.setCanvasVisibility(false);
 		});
-		Event.add("cancelbtn", function(){ 
+		Event.add("cancel_btn", function(){
 			selectedBtn = 1;
-			menuCanvas.setCanvasVisibility(false);
+			settingCanvas.setCanvasVisibility(false);
 			maincanvas.setCanvasVisibility(true);
 		});
 
