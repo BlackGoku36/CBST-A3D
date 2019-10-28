@@ -12,10 +12,11 @@ class MainCanvasController extends iron.Trait {
 
 	var world = WorldController;
 	var bld = BuildingController;
-	var selectedBtn = 0;
 
 	var menuState = 0;
-	var selectBldState = 0;
+
+	var bldMenuBtn = 0;
+	var bldMenuState = 0;
 
 	public function new() {
 		super();
@@ -36,49 +37,48 @@ class MainCanvasController extends iron.Trait {
 			if (menuState == 0){
 				maincanvas.getElement("menu_empty").visible = true;
 				menuState = 1;
-				selectBldState = 0;
+				bldMenuState = 0;
 			}else if (menuState == 1){
 				maincanvas.getElement("menu_empty").visible = false;
 				menuState = 0;
-				selectedBtn = 0;
 			}
 		});
 
-		Event.add("house_btn", function(){ selectedBtn = 3; selectBldState == 0 ||selectBldState == 4||selectBldState == 5 ? selectBldState = 3 : selectBldState = 0;});
-		Event.add("factory_btn", function(){ selectedBtn = 4; selectBldState == 0 ||selectBldState == 3||selectBldState == 5 ? selectBldState = 4 : selectBldState = 0;});
-		Event.add("community_btn", function(){ selectedBtn = 5; selectBldState == 0 ||selectBldState == 3||selectBldState == 4 ? selectBldState = 5 : selectBldState = 0;});
+		Event.add("house_btn", function(){ bldMenuBtn = 3; bldMenuState == 0 ||bldMenuState == 4||bldMenuState == 5 ? bldMenuState = 3 : bldMenuState = 0;});
+		Event.add("factory_btn", function(){ bldMenuBtn = 4; bldMenuState == 0 ||bldMenuState == 3||bldMenuState == 5 ? bldMenuState = 4 : bldMenuState = 0;});
+		Event.add("community_btn", function(){ bldMenuBtn = 5; bldMenuState == 0 ||bldMenuState == 3||bldMenuState == 4 ? bldMenuState = 5 : bldMenuState = 0;});
 		Event.add("setting_btn", function(){
-			selectedBtn = 1;
+			bldMenuBtn = 1;
 			settingCanvas.setCanvasVisibility(true);
 			maincanvas.setCanvasVisibility(false);
 		});
 		Event.add("cancel_btn", function(){
-			selectedBtn = 1;
+			bldMenuBtn = 1;
 			settingCanvas.setCanvasVisibility(false);
 			maincanvas.setCanvasVisibility(true);
 		});
 
-		Event.add("selectbldbtn1", function(){
-			switch (selectedBtn){
+		Event.add("bld_menu_btn_1", function(){
+			switch (bldMenuBtn){
 				case 3: bld.spawnBuilding(1);
 				case 4: bld.spawnBuilding(5);
 				case 5: bld.spawnBuilding(2);
 			}
 		});
-		Event.add("selectbldbtn2", function(){
-			switch (selectedBtn){
+		Event.add("bld_menu_btn_2", function(){
+			switch (bldMenuBtn){
 				case 4: bld.spawnBuilding(6);
 				case 5: bld.spawnBuilding(3);
 			}
 		});
-		Event.add("selectbldbtn3", function(){
-			switch (selectedBtn){
+		Event.add("bld_menu_btn_3", function(){
+			switch (bldMenuBtn){
 				case 4: bld.spawnBuilding(7);
 				case 5: bld.spawnBuilding(4);
 			}
 		});
-		Event.add("selectbldbtn4", function(){
-			switch (selectedBtn){
+		Event.add("bld_menu_btn_4", function(){
+			switch (bldMenuBtn){
 				case 4: bld.spawnBuilding(8);
 			}
 		});
@@ -88,37 +88,37 @@ class MainCanvasController extends iron.Trait {
 		updatePB();
 		updateAmount();
 
-		if(selectedBtn == 3 || selectedBtn == 4 || selectedBtn == 5){
-			maincanvas.getElement("select_bld_text").text = getTypeFromInt(selectedBtn);
-			maincanvas.getElement("select_bld").visible = true;
+		if(bldMenuBtn == 3 || bldMenuBtn == 4 || bldMenuBtn == 5){
+			maincanvas.getElement("bld_menu_text").text = getCategoryFromInt(bldMenuBtn);
+			maincanvas.getElement("bld_menu").visible = true;
 		}
-		if (selectBldState == 0 || menuState == 0){
-			maincanvas.getElement("select_bld").visible = false;
+		if (bldMenuState == 0 || menuState == 0){
+			maincanvas.getElement("bld_menu").visible = false;
 		}
-		switch (selectedBtn){
+		switch (bldMenuBtn){
 			case 3:
-				maincanvas.getElement("select_bld_btn_1").text =  "House";
-				maincanvas.getElement("select_bld_btn_1").visible = true;
-				maincanvas.getElement("select_bld_btn_2").visible = false;
-				maincanvas.getElement("select_bld_btn_3").visible = false;
-				maincanvas.getElement("select_bld_btn_4").visible = false;
+				maincanvas.getElement("bld_menu_btn_1").text =  "House";
+				maincanvas.getElement("bld_menu_btn_1").visible = true;
+				maincanvas.getElement("bld_menu_btn_2").visible = false;
+				maincanvas.getElement("bld_menu_btn_3").visible = false;
+				maincanvas.getElement("bld_menu_btn_4").visible = false;
 			case 4:
-				maincanvas.getElement("select_bld_btn_1").text =  "Sawmill";
-				maincanvas.getElement("select_bld_btn_1").visible = true;
-				maincanvas.getElement("select_bld_btn_2").text =  "Quarry";
-				maincanvas.getElement("select_bld_btn_2").visible = true;
-				maincanvas.getElement("select_bld_btn_3").text =  "Steelworks";
-				maincanvas.getElement("select_bld_btn_3").visible = true;
-				maincanvas.getElement("select_bld_btn_4").text =  "Powerplant";
-				maincanvas.getElement("select_bld_btn_4").visible = true;
+				maincanvas.getElement("bld_menu_btn_1").text =  "Sawmill";
+				maincanvas.getElement("bld_menu_btn_1").visible = true;
+				maincanvas.getElement("bld_menu_btn_2").text =  "Quarry";
+				maincanvas.getElement("bld_menu_btn_2").visible = true;
+				maincanvas.getElement("bld_menu_btn_3").text =  "Steelworks";
+				maincanvas.getElement("bld_menu_btn_3").visible = true;
+				maincanvas.getElement("bld_menu_btn_4").text =  "Powerplant";
+				maincanvas.getElement("bld_menu_btn_4").visible = true;
 			case 5:
-				maincanvas.getElement("select_bld_btn_1").text =  "Park";
-				maincanvas.getElement("select_bld_btn_1").visible = true;
-				maincanvas.getElement("select_bld_btn_2").text =  "Garden";
-				maincanvas.getElement("select_bld_btn_2").visible = true;
-				maincanvas.getElement("select_bld_btn_3").text =  "Sport.C.";
-				maincanvas.getElement("select_bld_btn_3").visible = true;
-				maincanvas.getElement("select_bld_btn_4").visible = false;
+				maincanvas.getElement("bld_menu_btn_1").text =  "Park";
+				maincanvas.getElement("bld_menu_btn_1").visible = true;
+				maincanvas.getElement("bld_menu_btn_2").text =  "Garden";
+				maincanvas.getElement("bld_menu_btn_2").visible = true;
+				maincanvas.getElement("bld_menu_btn_3").text =  "Sport.C.";
+				maincanvas.getElement("bld_menu_btn_3").visible = true;
+				maincanvas.getElement("bld_menu_btn_4").visible = false;
 		}
 	}
 
@@ -146,7 +146,7 @@ class MainCanvasController extends iron.Trait {
 		// maincanvas.getElement("happiness-amt").text = world.happiness[0] + "/" + world.happiness[1];
 	}
 
-	static function getTypeFromInt(int: Int):String {
+	static function getCategoryFromInt(int: Int):String {
 		var type = "";
 		switch (int){
 			case 3: type = "House";
