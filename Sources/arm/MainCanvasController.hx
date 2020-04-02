@@ -1,9 +1,27 @@
 package arm;
 
+import haxe.EnumTools.EnumValueTools;
+import iron.object.Object;
+import arm.data.Buildings;
+import arm.data.Buildings.Building;
+import arm.data.BuildingList;
 import armory.trait.internal.CanvasScript;
 import armory.system.Event;
 
 import arm.WorldController;
+
+enum MenuState {
+	Opened;
+	Closed;
+}
+
+enum SubMenuState {
+	Settings;
+	Layout;
+	Community;
+	Factory;
+	None;
+}
 
 class MainCanvasController extends iron.Trait {
 
@@ -11,12 +29,11 @@ class MainCanvasController extends iron.Trait {
 	static var settingCanvas: CanvasScript;
 
 	var world = WorldController;
-	var bld = BuildingController;
+	var bld = Buildings;
 
-	var menuState = 0;
+	var menuState: MenuState = Closed;
 
-	var bldMenuBtn = 0;
-	var bldMenuState = 0;
+	var bldMenuState: SubMenuState = None;
 
 	public function new() {
 		super();
@@ -34,125 +51,112 @@ class MainCanvasController extends iron.Trait {
 		maincanvas.getElement("menu_empty").visible = false;
 
 		Event.add("menu_btn", function(){
-			if (menuState == 0){
+			if (menuState == Closed){
 				maincanvas.getElement("menu_empty").visible = true;
-				menuState = 1;
-				bldMenuState = 0;
-			}else if (menuState == 1){
+				menuState = Opened;
+				bldMenuState = None;
+			}else if (menuState == Opened){
 				maincanvas.getElement("menu_empty").visible = false;
-				menuState = 0;
+				menuState = Closed;
 			}
 		});
 
-		Event.add("house_btn", function(){ bldMenuBtn = 3; bldMenuState == 3 ? bldMenuState = 0 : bldMenuState = 3;});
-		Event.add("factory_btn", function(){ bldMenuBtn = 4; bldMenuState == 4 ? bldMenuState = 0 : bldMenuState = 4;});
-		Event.add("community_btn", function(){ bldMenuBtn = 5; bldMenuState == 5 ? bldMenuState = 0 : bldMenuState = 5;});
+		Event.add("factory_btn", function(){
+			bldMenuState == Factory ? bldMenuState = None : bldMenuState = Factory;
+		});
+
+		Event.add("community_btn", function(){
+			bldMenuState == Community ? bldMenuState = None : bldMenuState = Community;
+		});
+
 		Event.add("setting_btn", function(){
-			bldMenuBtn = 1;
+			bldMenuState == Settings;
 			settingCanvas.setCanvasVisibility(true);
 			maincanvas.setCanvasVisibility(false);
 		});
+
 		Event.add("cancel_btn", function(){
-			bldMenuBtn = 1;
 			settingCanvas.setCanvasVisibility(false);
 			maincanvas.setCanvasVisibility(true);
 		});
 
 		Event.add("bld_menu_btn_1", function(){
 			switch (bldMenuState){
-				case 3: bld.spawnBuilding(1);
-				case 4: bld.spawnBuilding(5);
-				case 5: bld.spawnBuilding(2);
+				case Community: bld.createBuilding(BuildingList.House, done);
+				case Factory: bld.createBuilding(BuildingList.Sawmill, done);
+				case _:
 			}
 		});
+
 		Event.add("bld_menu_btn_2", function(){
 			switch (bldMenuState){
-				case 4: bld.spawnBuilding(6);
-				case 5: bld.spawnBuilding(3);
+				case Community: bld.createBuilding(BuildingList.Park, done);
+				case Factory: bld.createBuilding(BuildingList.Quarry, done);
+				case _:
 			}
 		});
+
 		Event.add("bld_menu_btn_3", function(){
 			switch (bldMenuState){
-				case 4: bld.spawnBuilding(7);
-				case 5: bld.spawnBuilding(4);
+				case Factory: bld.createBuilding(BuildingList.Powerplant, done);
+				case _:
 			}
 		});
-		Event.add("bld_menu_btn_4", function(){
-			switch (bldMenuState){
-				case 4: bld.spawnBuilding(8);
-			}
-		});
+		// Event.add("bld_menu_btn_4", function(){
+		// });
+	}
+
+	function done(bld:Building) {
+		BuildingController.selectBuilding(bld);
 	}
 
 	function updateCanvas() {
 		updatePB();
 		updateAmount();
 
-		if(bldMenuState == 3 || bldMenuState == 4 || bldMenuState == 5){
-			maincanvas.getElement("bld_menu_text").text = getCategoryFromInt(bldMenuBtn);
+		if(bldMenuState == Community || bldMenuState == Factory){
+			maincanvas.getElement("bld_menu_text").text = bldMenuState.getName();
 			maincanvas.getElement("bld_menu").visible = true;
 		}
-		if (bldMenuState == 0 || menuState == 0){
+		if (bldMenuState == None || menuState == Closed){
 			maincanvas.getElement("bld_menu").visible = false;
 		}
+
 		switch (bldMenuState){
-			case 3:
+			case Community:
 				maincanvas.getElement("bld_menu_btn_1").text =  "House";
 				maincanvas.getElement("bld_menu_btn_1").visible = true;
-				maincanvas.getElement("bld_menu_btn_2").visible = false;
+				maincanvas.getElement("bld_menu_btn_2").text =  "Park";
+				maincanvas.getElement("bld_menu_btn_2").visible = true;
 				maincanvas.getElement("bld_menu_btn_3").visible = false;
 				maincanvas.getElement("bld_menu_btn_4").visible = false;
-			case 4:
+			case Factory:
 				maincanvas.getElement("bld_menu_btn_1").text =  "Sawmill";
 				maincanvas.getElement("bld_menu_btn_1").visible = true;
 				maincanvas.getElement("bld_menu_btn_2").text =  "Quarry";
 				maincanvas.getElement("bld_menu_btn_2").visible = true;
-				maincanvas.getElement("bld_menu_btn_3").text =  "Steelworks";
-				maincanvas.getElement("bld_menu_btn_3").visible = true;
-				maincanvas.getElement("bld_menu_btn_4").text =  "Powerplant";
-				maincanvas.getElement("bld_menu_btn_4").visible = true;
-			case 5:
-				maincanvas.getElement("bld_menu_btn_1").text =  "Park";
-				maincanvas.getElement("bld_menu_btn_1").visible = true;
-				maincanvas.getElement("bld_menu_btn_2").text =  "Garden";
-				maincanvas.getElement("bld_menu_btn_2").visible = true;
-				maincanvas.getElement("bld_menu_btn_3").text =  "Sport.C.";
+				maincanvas.getElement("bld_menu_btn_3").text =  "Powerplant";
 				maincanvas.getElement("bld_menu_btn_3").visible = true;
 				maincanvas.getElement("bld_menu_btn_4").visible = false;
+			case _:
 		}
 	}
 
 	function updatePB() {
-		// maincanvas.getElement("happinesspb").progress_total = world.happiness[1];
-		// maincanvas.getElement("happinesspb").progress_at = world.happiness[0];
-		maincanvas.getElement("moneypb").progress_total = world.money[1];
-		maincanvas.getElement("moneypb").progress_at = world.money[0];
-		maincanvas.getElement("woodpb").progress_total = world.woods[1];
-		maincanvas.getElement("woodpb").progress_at = world.woods[0];
-		maincanvas.getElement("stonepb").progress_total = world.stones[1];
-		maincanvas.getElement("stonepb").progress_at = world.stones[0];
-		maincanvas.getElement("steelpb").progress_total = world.steels[1];
-		maincanvas.getElement("steelpb").progress_at = world.steels[0];
-		maincanvas.getElement("electricitypb").progress_total = world.electricity[1];
-		maincanvas.getElement("electricitypb").progress_at = world.electricity[0];
+		maincanvas.getElement("moneypb").progress_total = Bank.moneyCapacity;
+		maincanvas.getElement("moneypb").progress_at = Bank.money;
+		maincanvas.getElement("woodpb").progress_total = Bank.woodsCapacity;
+		maincanvas.getElement("woodpb").progress_at = Bank.woods;
+		maincanvas.getElement("stonepb").progress_total = Bank.stonesCapacity;
+		maincanvas.getElement("stonepb").progress_at = Bank.stones;
+		maincanvas.getElement("electricitypb").progress_total = Bank.electricityCapacity;
+		maincanvas.getElement("electricitypb").progress_at = Bank.electricity;
 	}
 
 	function updateAmount() {
-		maincanvas.getElement("money-amt").text = world.money[0] + "/" + world.money[1];
-		maincanvas.getElement("wood-amt").text = world.woods[0] + "/" + world.woods[1];
-		maincanvas.getElement("stone-amt").text = world.stones[0] + "/" + world.stones[1];
-		maincanvas.getElement("steel-amt").text = world.steels[0] + "/" + world.steels[1];
-		maincanvas.getElement("electricity-amt").text = world.electricity[0] + "/" + world.electricity[1];
-		// maincanvas.getElement("happiness-amt").text = world.happiness[0] + "/" + world.happiness[1];
-	}
-
-	static function getCategoryFromInt(int: Int):String {
-		var type = "";
-		switch (int){
-			case 3: type = "House";
-			case 4: type = "Factory";
-			case 5: type = "Community";
-		}
-		return type;
+		maincanvas.getElement("money-amt").text = Bank.money + "/" + Bank.moneyCapacity;
+		maincanvas.getElement("wood-amt").text = Bank.woods + "/" + Bank.woodsCapacity;
+		maincanvas.getElement("stone-amt").text = Bank.stones + "/" + Bank.stonesCapacity;
+		maincanvas.getElement("electricity-amt").text = Bank.electricity + "/" + Bank.electricityCapacity;
 	}
 }

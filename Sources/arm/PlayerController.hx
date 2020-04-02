@@ -1,5 +1,6 @@
 package arm;
 
+import arm.data.Buildings;
 import iron.object.Object;
 import iron.Scene;
 import iron.system.Input;
@@ -20,22 +21,22 @@ class PlayerController extends iron.Trait {
 	}
 
 	function update() {
-		if(!building.isBuildingSelected){
-			hideInfoCard();
+
+		if(building.selectedBuilding == null){
 			if (mouse.started()){
 				building.raySelectBuilding();
 			}
 		}else{
-			showInfoCard();
 			if (mouse.started("right")) {
-				if (!building.buildingInContact){
+				//TODO: Fix building contact
+				// if (!building.buildingInContact){
 					building.unselectBuilding();
-				}
+				// }
 			}
 			if (kb.started("m")){
 				building.buildingMove = true;
 			}else if (kb.started("f")){
-				building.removeBuilding();
+				Buildings.removeBuilding(building.selectedBuilding, building.unselectBuilding);
 			}else if (kb.started("r")){
 				building.rotateBuilding();
 			}
@@ -43,20 +44,9 @@ class PlayerController extends iron.Trait {
 
 		if (building.buildingMove){
 			building.moveBuilding();
-			building.buildingContact();
+			// building.buildingContact();
 		}
 
-	}
-
-	function showInfoCard(){
-		Scene.active.getChild("infocard").transform.loc.setFrom(Scene.active.getChild(building.selectedBuilding.name).transform.loc);
-		Scene.active.getChild("infocard").transform.loc.addf(0.0, 0.0, 10.0);
-		Scene.active.getChild("infocard").transform.buildMatrix();
-	}
-
-	function hideInfoCard() {
-		Scene.active.getChild("infocard").transform.loc.set(0.0, 0.0, -10.0);
-		Scene.active.getChild("infocard").transform.buildMatrix();
 	}
 
 }
