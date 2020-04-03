@@ -1,5 +1,6 @@
 package arm.data;
 
+import kha.Scheduler;
 import arm.Bank;
 import iron.object.Object;
 import iron.Scene;
@@ -10,6 +11,7 @@ typedef Building = {
 	var type:BuildingType;
 	var cost:BuildingCost;
 	var produce:BuildingProduce;
+	var timerID:Int;
 }
 
 typedef BuildingCost = {
@@ -50,6 +52,7 @@ class Buildings{
 	}
 
 	public static function removeBuilding(building:Building, done:Void->Void){
+		Scheduler.removeTimeTask(building.timerID);
 		building.object.remove();
 		removefromArray(building.name, getBuildingArray(building.type));
 		done();
@@ -71,10 +74,23 @@ class Buildings{
 		Bank.electricity -= building.cost.electricity;
 	}
 
+	static function harvestProduce(building:Building) {
+		Bank.money += building.produce.money;
+		Bank.woods += building.produce.wood;
+		Bank.stones += building.produce.stone;
+		Bank.electricity += building.produce.electricity;
+	}
+
 	static function spawnBuildingAsset(building:Building, done:Building->Void) {
 		Scene.active.spawnObject(building.name, null, function(obj: Object){
 			obj.name = building.name;
 			building.object = obj;
+			building.timerID = Scheduler.addTimeTask(function(){
+				if(Bank.electricity > building.cost.electricity){
+					Bank.electricity -= building.cost.electricity;
+					harvestProduce(building);
+				}
+			}, 5, 5);
 			done(building);
 		});
 	}

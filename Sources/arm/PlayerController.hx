@@ -5,15 +5,12 @@ import iron.object.Object;
 import iron.Scene;
 import iron.system.Input;
 
-import arm.BuildingController;
-
 class PlayerController extends iron.Trait {
 
 	var mouse = Input.getMouse();
 	var kb = Input.getKeyboard();
 
 	var building = BuildingController;
-	var world = WorldController;
 
 	public function new() {
 		super();
@@ -29,9 +26,9 @@ class PlayerController extends iron.Trait {
 		}else{
 			if (mouse.started("right")) {
 				//TODO: Fix building contact
-				// if (!building.buildingInContact){
+				if (!building.buildingInContact){
 					building.unselectBuilding();
-				// }
+				}
 			}
 			if (kb.started("m")){
 				building.buildingMove = true;
@@ -44,7 +41,7 @@ class PlayerController extends iron.Trait {
 
 		if (building.buildingMove){
 			building.moveBuilding();
-			// building.buildingContact();
+			building.buildingContact();
 		}
 
 	}

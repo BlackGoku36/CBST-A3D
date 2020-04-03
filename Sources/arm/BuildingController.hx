@@ -9,7 +9,6 @@ import iron.math.RayCaster;
 import iron.system.Input;
 import iron.object.Object;
 
-import arm.WorldController;
 import arm.data.Buildings;
 
 class BuildingController extends iron.Trait {
@@ -60,7 +59,9 @@ class BuildingController extends iron.Trait {
 		var physics = PhysicsWorld.active;
 		var contact = physics.getContacts(selectedBuilding.object.getTrait(RigidBody));
 		if(contact != null){
+			// trace("ok");
 			for (c in contact){
+				trace(c.object.name);
 				if(c.object.name != "Ground") buildingInContact = true;
 				else buildingInContact = false;
 			}

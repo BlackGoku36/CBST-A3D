@@ -8,8 +8,6 @@ import arm.data.BuildingList;
 import armory.trait.internal.CanvasScript;
 import armory.system.Event;
 
-import arm.WorldController;
-
 enum MenuState {
 	Opened;
 	Closed;
@@ -28,7 +26,6 @@ class MainCanvasController extends iron.Trait {
 	static var maincanvas:CanvasScript;
 	static var settingCanvas: CanvasScript;
 
-	var world = WorldController;
 	var bld = Buildings;
 
 	var menuState: MenuState = Closed;

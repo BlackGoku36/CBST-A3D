@@ -19,8 +19,10 @@ class BuildingList {
 			wood: 0,
 			stone: 0,
 			electricity: 0
-		}
+		},
+		timerID: null
 	};
+
 	public static var Park: Building = {
 		name: "Park_Community",
 		object: null,
@@ -36,7 +38,8 @@ class BuildingList {
 			wood: 0,
 			stone: 0,
 			electricity: 0
-		}
+		},
+		timerID: null
 	};
 
 	public static var Sawmill: Building = {
@@ -54,8 +57,10 @@ class BuildingList {
 			wood: 5,
 			stone: 0,
 			electricity: 0
-		}
+		},
+		timerID: null
 	};
+
 	public static var Quarry: Building = {
 		name: "Quarry_Factory",
 		object: null,
@@ -71,8 +76,10 @@ class BuildingList {
 			wood: 0,
 			stone: 5,
 			electricity: 0
-		}
+		},
+		timerID: null
 	};
+
 	public static var Powerplant: Building = {
 		name: "Powerplant_Factory",
 		object: null,
@@ -88,7 +95,8 @@ class BuildingList {
 			wood: 0,
 			stone: 0,
 			electricity: 10
-		}
+		},
+		timerID: null
 	};
 
 }
